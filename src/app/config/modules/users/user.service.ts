@@ -17,7 +17,7 @@ const getSingleUser = async (id: number) => {
 };
 
 const updateUser = async (id: number, userData: Tuser) => {
-  const result = await User.updateOne({ userId: id }, userData, {
+  const result = await User.findOneAndUpdate({ userId: id }, userData, {
     new: true,
     runValidators: true,
   });

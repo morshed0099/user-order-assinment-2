@@ -1,5 +1,11 @@
 import { Schema, model } from 'mongoose';
-import { Taddress, Torder, Tuser } from './users/user.interface';
+import {
+  Taddress,
+  Torder,
+  Tuser,
+  UserMethod,
+  UserModel,
+} from './users/user.interface';
 
 const addressSchema = new Schema<Taddress>({
   city: { type: String, required: [true, 'city is required'] },
@@ -22,7 +28,7 @@ const orderSchema = new Schema<Torder>({
   },
 });
 
-const userSchema = new Schema<Tuser>({
+const userSchema = new Schema<Tuser, UserModel, UserMethod>({
   username: {
     type: String,
     unique: true,
@@ -78,4 +84,9 @@ const userSchema = new Schema<Tuser>({
   },
 });
 
-export const User = model<Tuser>('User', userSchema);
+userSchema.methods.isUserExists = async function (userId: number) {
+  const user = await User.findOne({ userId });
+  return user;
+};
+
+export const User = model<Tuser, UserModel>('User', userSchema);

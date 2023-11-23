@@ -1,8 +1,10 @@
+import { Model} from 'mongoose';
+
 export interface Taddress {
-    city: string;
-    street: string;
-    country: string;
-  };
+  city: string;
+  street: string;
+  country: string;
+}
 export interface Torder {
   price: number;
   quantity: number;
@@ -19,7 +21,11 @@ export interface Tuser {
   email: string;
   isActive: boolean;
   hobbies: string[];
-  address: Taddress
+  address: Taddress;
   order: Torder[];
 }
 
+export type UserMethod ={
+  isUserExists(userId: number): Promise<Tuser | null>;
+};
+export type UserModel = Model<Tuser, Record<string, never>, UserMethod>;
