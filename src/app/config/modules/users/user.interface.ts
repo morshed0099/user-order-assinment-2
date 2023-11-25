@@ -26,6 +26,7 @@ export interface Tuser {
 }
 
 export type UserMethod ={
+  // eslint-disable-next-line no-unused-vars
   isUserExists(userId: number): Promise<Tuser | null>;
 };
 export type UserModel = Model<Tuser, Record<string, never>, UserMethod>;

@@ -1,5 +1,5 @@
 import { User } from '../user.model';
-import { Tuser } from './user.interface';
+import { Torder, Tuser } from './user.interface';
 
 const createUser = async (user: Tuser) => {
   const result = await User.create(user);
@@ -28,10 +28,16 @@ const deleUser = async (id: number) => {
   return result;
 };
 
+const createUserOrder = async (userId: number, order: Torder) => {
+const result= User.findOneAndUpdate({userId},{$push:{order:order}})  
+  return result;
+};
+
 export const userService = {
   createUser,
   getAlluser,
   getSingleUser,
   updateUser,
   deleUser,
+  createUserOrder,
 };
