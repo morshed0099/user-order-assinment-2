@@ -7,6 +7,7 @@ router.post('/', userController.createUser);
 router.get('/', userController.getAllUser);
 router.get('/:userId', userController.getSingleUser);
 router.put('/:userId', userController.updateUser);
+router.get('/:userId/orders')
 router.put('/:userId/orders', userController.createUserOrder);
 
 export const userRouter = router;

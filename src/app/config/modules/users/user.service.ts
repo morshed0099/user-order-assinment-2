@@ -2,6 +2,9 @@ import { User } from '../user.model';
 import { Torder, Tuser } from './user.interface';
 
 const createUser = async (user: Tuser) => {
+  if (await User.isUserExists(user.userId)) {
+    throw new Error('user alredy exits');
+  }
   const result = await User.create(user);
   return result;
 };
@@ -29,7 +32,22 @@ const deleUser = async (id: number) => {
 };
 
 const createUserOrder = async (userId: number, order: Torder) => {
-const result= User.findOneAndUpdate({userId},{$push:{order:order}})  
+  const orderWithUserId = {
+    ...order,
+    userId,
+  };
+  const result = User.findOneAndUpdate(
+    { userId: userId },
+    { $push: { order: orderWithUserId } },
+    {
+      new: true,
+    },
+  );
+  return result;
+};
+
+const getAllOrders = async (userId: number) => {
+  const result = User.find({ userId });
   return result;
 };
 
@@ -40,4 +58,5 @@ export const userService = {
   updateUser,
   deleUser,
   createUserOrder,
+  getAllOrders,
 };

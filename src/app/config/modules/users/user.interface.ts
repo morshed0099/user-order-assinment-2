@@ -9,6 +9,7 @@ export interface Torder {
   price: number;
   quantity: number;
   productName: string;
+  userId:number
 }
 export interface Tuser {
   userId: number;
@@ -25,8 +26,8 @@ export interface Tuser {
   order: Torder[];
 }
 
-export type UserMethod ={
+export interface userMethod extends Model<Tuser>{
   // eslint-disable-next-line no-unused-vars
   isUserExists(userId: number): Promise<Tuser | null>;
 };
-export type UserModel = Model<Tuser, Record<string, never>, UserMethod>;
+

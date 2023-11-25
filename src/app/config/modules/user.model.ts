@@ -1,12 +1,5 @@
 import { Schema, model } from 'mongoose';
-import {
-  Taddress,
-  Torder,
-  Tuser,
-  UserMethod,
-  UserModel,
-} from './users/user.interface';
-
+import { Taddress, Torder, Tuser, userMethod } from './users/user.interface';
 
 const addressSchema = new Schema<Taddress>({
   city: { type: String, required: [true, 'city is required'] },
@@ -14,26 +7,26 @@ const addressSchema = new Schema<Taddress>({
   country: { type: String, required: [true, 'country is required'] },
 });
 
-
 const orderSchema = new Schema<Torder>({
+  userId: {
+    type: Number,
+    ref: 'User',
+  },
   quantity: {
     type: Number,
-    // required: [true, 'quantity is required'],
+    required: [true, 'quantity is required'],
   },
   price: {
     type: Number,
-    // required: [true, 'price is required'],
+    required: [true, 'price is required'],
   },
   productName: {
     type: String,
-    // required: [true, 'product name is required'],
+    required: [true, 'product name is required'],
   },
-
-  
 });
 
-
-const userSchema = new Schema<Tuser, UserModel, UserMethod>({
+const userSchema = new Schema<Tuser, userMethod>({
   username: {
     type: String,
     unique: true,
@@ -44,23 +37,23 @@ const userSchema = new Schema<Tuser, UserModel, UserMethod>({
   fullName: {
     firstName: {
       type: String,
-      // required: [true, 'first name is required'],
+      required: [true, 'first name is required'],
       trim: true,
     },
     lastName: {
       type: String,
-      // required: [true, 'last name is requird'],
+      required: [true, 'last name is requird'],
       trim: true,
     },
   },
   address: {
     type: addressSchema,
-    // required: [true, 'address is required'],
+    required: [true, 'address is required'],
   },
   hobbies: [
     {
       type: String,
-      // required: [true, 'hobbie is required'],
+      required: [true, 'hobbie is required'],
     },
   ],
   order: [
@@ -76,23 +69,25 @@ const userSchema = new Schema<Tuser, UserModel, UserMethod>({
   email: {
     type: String,
     unique: true,
-    // required: [true, 'email is required'],
+    required: [true, 'email is required'],
   },
   age: {
     type: Number,
-    // required: [true, 'age is required'],
+    required: [true, 'age is required'],
   },
   isActive: {
     type: Boolean,
     default: true,
-    // required: [true, `{VALUE} is wrong !! will be true or false nothing else`],
+    required: [true, `{VALUE} is wrong !! will be true or false nothing else`],
   },
 });
 
-
-userSchema.methods.isUserExists = async function (userId: number) {
-  const user = await User.findOne({ userId });
-  return user;
+// userSchema.statics.isUserExists = async function (userId: number) {
+//   const user = await User.findOne({ userId: userId });
+//   return user;
+// };
+userSchema.statics.isUserExists = async function (userId: number) {
+  const existingUser = await User.findOne({ userId: userId });
+  return existingUser;
 };
-
-export const User = model<Tuser, UserModel>('User', userSchema);
+export const User = model<Tuser, userMethod>('User', userSchema);
