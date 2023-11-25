@@ -200,6 +200,13 @@ const allOrderTotalPrice = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId);
     const result = await userService.allOrdersTotalPrice(userId);
+    if(result.length===0){
+      res.status(200).json({
+        success: true,
+        message: ' user not yet order any product',
+        data: 'no order found',
+      });
+    }
     res.status(200).json({
       success: true,
       message: ' Total price calculated successfully',

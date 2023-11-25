@@ -8,23 +8,22 @@ export interface Taddress {
 export interface Torder {
   price: number;
   quantity: number;
-  productName: string;
-  userId:number
+  productName: string; 
 }
 export interface Tuser {
-  userId: number;
-  username: string;
-  password :string;
-  fullName: {
-    firstName: string;
-    lastName: string;
+  userId : number;
+  username : string;
+  password  :string;
+  fullName : {
+    firstName : string;
+    lastName : string;
   };
   age: number;
   email: string;
   isActive: boolean;
   hobbies: string[];
   address: Taddress;
-  order: Torder[];
+  order?: Torder[];
 }
 
 export interface userMethod extends Model<Tuser>{

@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Query, Schema, model } from 'mongoose';
 import { Taddress, Torder, Tuser, userMethod } from './users/user.interface';
 import bcrypt from 'bcrypt';
 import config from '..';
@@ -10,10 +10,6 @@ const addressSchema = new Schema<Taddress>({
 });
 
 const orderSchema = new Schema<Torder>({
-  userId: {
-    type: Number,
-    ref: 'User',
-  },
   quantity: {
     type: Number,
     required: [true, 'quantity is required'],
@@ -92,6 +88,10 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.pre(/^find/, async function (this: Query<Tuser, Document>, next) {
+  this.find({ isActive: { $eq: true } });
+  next();
+});
 // userSchema.statics.isUserExists = async function (userId: number) {
 //   const user = await User.findOne({ userId: userId });
 //   return user;
