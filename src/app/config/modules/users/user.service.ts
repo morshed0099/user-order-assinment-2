@@ -34,7 +34,7 @@ const updateUser = async (id: number, userData: Tuser) => {
 };
 const deleUser = async (userId: number) => {
   if (!(await User.isUserExists(userId))) {
-    throw new Error('user not found');
+    throw new Error('user not found");
   }
   const result = await User.deleteOne({ userId: userId });
   return result;
