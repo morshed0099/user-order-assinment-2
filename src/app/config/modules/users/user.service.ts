@@ -23,6 +23,9 @@ const getSingleUser = async (id: number) => {
 };
 
 const updateUser = async (id: number, userData: Tuser) => {
+  if (!(await User.isUserExists(id))) {
+    throw new Error('user not found');
+  }
   const result = await User.findOneAndUpdate({ userId: id }, userData, {
     new: true,
     runValidators: true,
@@ -53,27 +56,39 @@ const createUserOrder = async (userId: number, order: Torder) => {
 };
 
 const getAllOrders = async (userId: number) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('user not found');
+  }
   const result = User.find({ userId });
   return result;
 };
 
 const getAllOrder = async (userId: number) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('user not found');
+  }
   const result = User.find({ userId: userId }, 'order -_id');
   return result;
 };
 
 const allOrdersTotalPrice = async (userId: number) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('user not found');
+  }
   const result = User.aggregate([
     { $match: { userId: userId } },
     { $unwind: '$order' },
-    { $project: { order: 1 } },
     {
       $group: {
         _id: null,
-        total: { $sum: '$order.price' },
+        totalPrice: { $sum: '$order.price' },
       },
     },
+    {
+      $project: { _id: 0 },
+    },
   ]);
+
   return result;
 };
 
