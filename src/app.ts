@@ -8,8 +8,6 @@ app.use(express.json());
 
 app.use('/api/users', userRouter);
 
-
-
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'sucess',
