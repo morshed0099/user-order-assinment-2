@@ -8,7 +8,7 @@ const createUser = async (req: Request, res: Response) => {
     const user: Tuser = req.body;
     const zodParseData = userValidationSchema.parse(user);
     const result = await userService.createUser(zodParseData);
-    console.log(result)
+    console.log(result);
     res.status(201).json({
       success: true,
       message: 'User created successfully!',
@@ -50,7 +50,6 @@ const getAllUser = async (req: Request, res: Response) => {
     });
   }
 };
-
 
 const updateUser = async (req: Request, res: Response) => {
   try {
@@ -123,7 +122,27 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
-
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const result = await userService.deleUser(userId);
+    res.status(200).send({
+      success: true,
+      message: 'user deleted successfully !!',
+      data: result,
+    });
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: 'user not found',
+      error: {
+        code: 404,
+        description: error.message,
+      },
+    });
+  }
+};
 const createUserOrder = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.userId);
@@ -157,4 +176,5 @@ export const userController = {
   updateUser,
   getSingleUser,
   createUserOrder,
+  deleteUser
 };

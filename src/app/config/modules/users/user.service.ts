@@ -10,12 +10,12 @@ const createUser = async (user: Tuser) => {
 };
 
 const getAlluser = async () => {
-  const result = await User.find().select("-password");
+  const result = await User.find().select('-password');
   return result;
 };
 
 const getSingleUser = async (id: number) => {
-  const result = await User.findOne({ userId: id }).select("-password");
+  const result = await User.findOne({ userId: id }).select('-password');
   return result;
 };
 
@@ -26,8 +26,11 @@ const updateUser = async (id: number, userData: Tuser) => {
   });
   return result;
 };
-const deleUser = async (id: number) => {
-  const result = await User.deleteOne({ userId: id });
+const deleUser = async (userId: number) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('user not found');
+  }
+  const result = await User.deleteOne({ userId: userId });
   return result;
 };
 
