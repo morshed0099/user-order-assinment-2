@@ -10,12 +10,15 @@ const createUser = async (user: Tuser) => {
 };
 
 const getAlluser = async () => {
-  const result = await User.find().select('-password');
+  const result = await User.find().select({ order: 0, password: 0 });
   return result;
 };
 
 const getSingleUser = async (id: number) => {
-  const result = await User.findOne({ userId: id }).select('-password');
+  const result = await User.findOne({ userId: id }).select({
+    order: 0,
+    password: 0,
+  });
   return result;
 };
 
@@ -23,7 +26,7 @@ const updateUser = async (id: number, userData: Tuser) => {
   const result = await User.findOneAndUpdate({ userId: id }, userData, {
     new: true,
     runValidators: true,
-  });
+  }).select({ order: 0, password: 0 });
   return result;
 };
 const deleUser = async (userId: number) => {
@@ -54,6 +57,11 @@ const getAllOrders = async (userId: number) => {
   return result;
 };
 
+const getAllOrder = async (userId: number) => {
+  const result = User.find({ userId: userId },'order -_id');
+  return result;
+};
+
 export const userService = {
   createUser,
   getAlluser,
@@ -62,4 +70,5 @@ export const userService = {
   deleUser,
   createUserOrder,
   getAllOrders,
+  getAllOrder,
 };

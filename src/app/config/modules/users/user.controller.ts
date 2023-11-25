@@ -150,12 +150,13 @@ const createUserOrder = async (req: Request, res: Response) => {
     console.log(userId, order);
 
     const result = await userService.createUserOrder(userId, order);
-    res.status(200).json({
-      success: true,
-      message: 'order created succefully',
-      data: null,
-    });
-
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'order created succefully',
+        data: null,
+      });
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log(error);
@@ -170,11 +171,35 @@ const createUserOrder = async (req: Request, res: Response) => {
     });
   }
 };
+
+const getAllOrder = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const orders = await userService.getAllOrder(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'all order fetched !!',
+      data: orders,
+    });
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({
+      message: 'order not found',
+      error: {
+        code: 404,
+        description: error.message,
+        error,
+      },
+    });
+  }
+};
 export const userController = {
   createUser,
   getAllUser,
   updateUser,
   getSingleUser,
   createUserOrder,
-  deleteUser
+  deleteUser,
+  getAllOrder
 };
