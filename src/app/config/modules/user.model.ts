@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { Taddress, Torder, Tuser, userMethod } from './users/user.interface';
+import bcrypt from 'bcrypt';
+import config from '..';
 
 const addressSchema = new Schema<Taddress>({
   city: { type: String, required: [true, 'city is required'] },
@@ -46,6 +48,7 @@ const userSchema = new Schema<Tuser, userMethod>({
       trim: true,
     },
   },
+  password: { type: String, required: [true, 'password is requied'] },
   address: {
     type: addressSchema,
     required: [true, 'address is required'],
@@ -80,6 +83,13 @@ const userSchema = new Schema<Tuser, userMethod>({
     default: true,
     required: [true, `{VALUE} is wrong !! will be true or false nothing else`],
   },
+});
+
+userSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  user.password = await bcrypt.hash(user.password, Number(config.salt_round));
+  next();
 });
 
 // userSchema.statics.isUserExists = async function (userId: number) {

@@ -10,12 +10,12 @@ const createUser = async (user: Tuser) => {
 };
 
 const getAlluser = async () => {
-  const result = await User.find();
+  const result = await User.find().select("-password");
   return result;
 };
 
 const getSingleUser = async (id: number) => {
-  const result = await User.findOne({ userId: id });
+  const result = await User.findOne({ userId: id }).select("-password");
   return result;
 };
 

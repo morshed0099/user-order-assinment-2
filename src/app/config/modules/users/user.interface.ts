@@ -14,6 +14,7 @@ export interface Torder {
 export interface Tuser {
   userId: number;
   username: string;
+  password :string;
   fullName: {
     firstName: string;
     lastName: string;

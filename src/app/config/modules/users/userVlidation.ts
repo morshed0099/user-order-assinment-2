@@ -21,13 +21,14 @@ export const userValidationSchema = z.object({
     firstName: z.string().min(2).trim(),
     lastName: z.string().min(2).trim(),
   }),
+  password: z.string().max(25,{message:"password is not more than 25 carecter"}),
   address: addressValidationSchema,
   hobbies: z.array(z.string().nonempty()),
   order: z.array(orderValidateSchema).optional(),
   userId: z.number().int().positive(),
   email: z
     .string({ required_error: 'email is required and must be unique' })
-    .email({message:"email is required and email formet is not valid"}),
+    .email({ message: 'email is required and email formet is not valid' }),
   age: z.number(),
   isActive: z.boolean().default(true),
 });
