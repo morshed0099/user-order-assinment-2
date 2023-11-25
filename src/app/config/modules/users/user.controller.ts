@@ -8,7 +8,7 @@ const createUser = async (req: Request, res: Response) => {
     const user: Tuser = req.body;
     const zodParseData = userValidationSchema.parse(user);
     const result = await userService.createUser(zodParseData);
-    console.log(result);
+
     res.status(201).json({
       success: true,
       message: 'User created successfully!',
@@ -16,7 +16,7 @@ const createUser = async (req: Request, res: Response) => {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error);
+  
     res.status(500).json({
       success: false,
       message: 'User not created',
